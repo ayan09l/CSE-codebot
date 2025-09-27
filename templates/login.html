@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - CSE Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #1f1f2e;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.6);
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #00bfff;
+    }
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: #2a2a3d;
+      color: #fff;
+      font-size: 14px;
+    }
+    input:focus {
+      outline: none;
+      border: 1px solid #00bfff;
+    }
+    button {
+      width: 95%;
+      padding: 12px;
+      background: #00bfff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0095cc;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Student Login</h2>
+    <form method="POST">
+      <input type="text" name="username" placeholder="Username" required><br>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register">Register here</a></p>
+  </div>
+</body>
+</html>

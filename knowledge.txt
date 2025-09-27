@@ -1,0 +1,22 @@
+# CSE Coding Notes
+
+Python:
+- Python is an interpreted, high-level, general-purpose programming language.
+- A loop is used to repeat code. Types: for, while.
+- OOP stands for Object-Oriented Programming. Concepts: Class, Object, Inheritance, Polymorphism.
+
+C Programming:
+- C is a procedural programming language.
+- A pointer stores the memory address of another variable.
+- Arrays are collections of similar elements stored in contiguous memory.
+
+Java:
+- Java is an object-oriented programming language.
+- JVM (Java Virtual Machine) allows Java programs to run anywhere.
+- Constructors are special methods used to initialize objects.
+
+Data Structures:
+- Stack: LIFO (Last In First Out).
+- Queue: FIFO (First In First Out).
+- Linked List: collection of nodes connected using pointers.
+- Binary Tree: hierarchical structure with parent and child nodes.

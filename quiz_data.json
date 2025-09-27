@@ -1,0 +1,22 @@
+[
+  {
+    "question": "What is the time complexity of binary search?",
+    "answer": "O(log n)"
+  },
+  {
+    "question": "Which keyword is used to define a class in Python?",
+    "answer": "class"
+  },
+  {
+    "question": "What is the default value of int in Java?",
+    "answer": "0"
+  },
+  {
+    "question": "Which data structure uses FIFO order?",
+    "answer": "Queue"
+  },
+  {
+    "question": "In C, which header file is required for printf()?",
+    "answer": "stdio.h"
+  }
+]
