@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
-import subprocess, json, random
+import subprocess, json, random, os, requests
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"   # change in production
@@ -27,6 +27,29 @@ class QuizScore(db.Model):
 # ✅ Create tables
 with app.app_context():
     db.create_all()
+
+# ----------------- HuggingFace Fallback -----------------
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")   # set this in environment
+HF_MODEL = "microsoft/DialoGPT-small"
+
+def ask_huggingface(prompt):
+    headers = {"Authorization": f"Bearer {HF_API_TOKEN}"} if HF_API_TOKEN else {}
+    payload = {"inputs": prompt}
+    try:
+        response = requests.post(
+            f"https://api-inference.huggingface.co/models/{HF_MODEL}",
+            headers=headers, json=payload, timeout=30
+        )
+        if response.status_code == 200:
+            data = response.json()
+            if isinstance(data, list) and "generated_text" in data[0]:
+                return data[0]["generated_text"]
+            else:
+                return str(data)
+        else:
+            return f"⚠️ HuggingFace Error {response.status_code}"
+    except Exception as e:
+        return f"❌ HuggingFace error: {str(e)}"
 
 # ----------------- Routes -----------------
 @app.route("/")
@@ -148,8 +171,11 @@ def chat():
 
         # ✅ Normal Chatbot
         else:
-            with open("knowledge.txt", "r") as f:
-                knowledge = f.read()
+            try:
+                with open("knowledge.txt", "r") as f:
+                    knowledge = f.read()
+            except:
+                knowledge = ""
 
             full_prompt = f"""
 You are a friendly CSE teaching assistant for college students. 
@@ -161,16 +187,20 @@ Knowledge Base:
 Question: {user_message}
 Answer:
 """
-            result = subprocess.run(
-                ["ollama", "run", "llama3"],
-                input=full_prompt.encode("utf-8"),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                timeout=60
-            )
-            reply = result.stdout.decode("utf-8").strip()
-            if not reply:
-                reply = "⚠️ No response from model."
+            try:
+                result = subprocess.run(
+                    ["ollama", "run", "llama3"],
+                    input=full_prompt.encode("utf-8"),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    timeout=60
+                )
+                reply = result.stdout.decode("utf-8").strip()
+                if not reply:
+                    reply = "⚠️ No response from Ollama."
+            except Exception:
+                # ✅ Fallback to HuggingFace
+                reply = ask_huggingface(full_prompt)
 
         db.session.add(ChatHistory(user_id=user_id, role="bot", message=reply))
         db.session.commit()
